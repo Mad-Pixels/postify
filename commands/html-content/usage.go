@@ -1,0 +1,3 @@
+package htmlcontent
+
+const usageTemplate = ``
