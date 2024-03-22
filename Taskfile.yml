@@ -6,6 +6,7 @@ vars:
   go_root:
     sh: go env GOPATH
   golint_version: v1.57.1
+  binary_name: "postify"
 
 tasks:
   default:
@@ -59,9 +60,9 @@ tasks:
       - |
         echo "Building with params: | OS: ${GOOS} | ARCH: ${GOARCH} | ${BUILD_TYPE}"
         if [ "${BUILD_TYPE}" = "prd" ]; then
-          go build -ldflags="-s -w" -o build/postify-${GOOS}-${GOARCH} {{ .git_root }}/cmd/
+          go build -ldflags="-s -w" -o build/{{ .binary_name }}-${GOOS}-${GOARCH} {{ .git_root }}/cmd/
         else
-          go build --race -o build/postify-dev-${GOOS}-${GOARCH} {{ .git_root }}/cmd/
+          go build --race -o build/{{ .binary_name }}-dev-${GOOS}-${GOARCH} {{ .git_root }}/cmd/
         fi
     internal: true
 
