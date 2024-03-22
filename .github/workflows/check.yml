@@ -22,7 +22,7 @@ jobs:
           GO_VERSION=$(grep 'go ' go.mod | awk '{print $2}')
           echo "::set-output name=go-version::$GO_VERSION"
 
-  go-lint-and-test:
+  go-checks:
     needs: setup-env
     runs-on: ubuntu-latest
     strategy:
@@ -36,5 +36,5 @@ jobs:
           go-version: ${{ needs.setup-env.outputs.go-version }}
       - name: Install Task
         run: sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
-      - name: Run golangci-lint or tests
+      - name: Run checks
         run: task go/${{ matrix.task }}/run
