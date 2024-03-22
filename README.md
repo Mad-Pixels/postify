@@ -4,7 +4,7 @@
 
 Help you to streamline content management through a unified structure, enabling one source for multiple publishing endpoints.
 
-## Motivation 💡
+## Motivation💡
 
 The inception of Postify was driven by a need for an efficient tool to manage content publication across different 
 platforms seamlessly. As a developer and content creator, I sought a solution that could:
