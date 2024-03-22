@@ -1,0 +1,40 @@
+name: Go Checks
+
+on:
+  push:
+    branches-ignore:
+      - 'main'
+  pull_request:
+    branches-ignore:
+      - 'main'
+
+jobs:
+  setup-env:
+    runs-on: ubuntu-latest
+    outputs:
+      go-version: ${{ steps.set-env.outputs.go-version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set environment variables
+        id: set-env
+        run: |
+          GO_VERSION=$(grep 'go ' go.mod | awk '{print $2}')
+          echo "::set-output name=go-version::$GO_VERSION"
+
+  go-checks:
+    needs: setup-env
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        task: ['lint', 'test']
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ needs.setup-env.outputs.go-version }}
+      - name: Install Task
+        run: sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
+      - name: Run checks
+        run: task go/${{ matrix.task }}/run

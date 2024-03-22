@@ -1,0 +1,63 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  setup-env:
+    runs-on: ubuntu-latest
+    outputs:
+      go-version: ${{ steps.set-env.outputs.go-version }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set environment variables
+        id: set-env
+        run: |
+          GO_VERSION=$(grep 'go ' go.mod | awk '{print $2}')
+          echo "::set-output name=go-version::$GO_VERSION"
+
+  go-build:
+    needs: setup-env
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ needs.setup-env.outputs.go-version }}
+      - name: Install Task
+        run: sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
+      - name: Build binaries
+        run: task go/build/prd
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifact
+          path: ./build/**
+
+  create-release:
+    needs: go-build
+    name: Upload
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: build-artifact
+          path: ./build
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ./build/**
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
