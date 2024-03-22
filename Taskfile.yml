@@ -16,14 +16,12 @@ tasks:
 
   go/test/run:
     desc: Run tests.
-    dir: "{{ .git_root }}"
     cmds:
       - cmd: echo Running test on {{ OS }} {{ ARCH }}
       - go test -parallel=2 -shuffle=on {{ .git_root }}/... -cover
 
   go/lint/run:
     desc: Run golangci-lint.
-    dir: "{{ .git_root }}"
     deps:
       - go/lint/install
     cmds:
