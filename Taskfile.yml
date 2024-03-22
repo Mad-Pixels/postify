@@ -1,0 +1,92 @@
+version: 3
+
+vars:
+  git_root:
+    sh: git rev-parse --show-toplevel
+  go_root:
+    sh: go env GOPATH
+  golint_version: v1.57.1
+
+tasks:
+  default:
+    desc: Default task.
+    cmds:
+      - echo "Please enter a task or use -l or --list-all to list all available tasks"
+    silent: true
+
+  go/test/run:
+    desc: Run tests.
+    dir: "{{ .git_root }}"
+    cmds:
+      - cmd: echo Running test on {{ OS }} {{ ARCH }}
+      - go test -parallel=2 -shuffle=on {{ .git_root }}/... -cover
+
+  go/lint/run:
+    desc: Run golangci-lint.
+    dir: "{{ .git_root }}"
+    deps:
+      - go/lint/install
+    cmds:
+      - "{{ .go_root }}/bin/golangci-lint run"
+
+  go/build/prd:
+    desc: Build prd binaries files.
+    cmds:
+      - task: go/build/sample
+        vars: {GOOS: "linux", GOARCH: "amd64", BUILD_TYPE: "prd"}
+      - task: go/build/sample
+        vars: {GOOS: "linux", GOARCH: "arm64", BUILD_TYPE: "prd"}
+      - task: go/build/sample
+        vars: {GOOS: "darwin", GOARCH: "amd64", BUILD_TYPE: "prd"}
+      - task: go/build/sample
+        vars: {GOOS: "darwin", GOARCH: "arm64", BUILD_TYPE: "prd"}
+
+  go/build/dev:
+    desc: Build development binary.
+    cmds:
+      - task: go/build/sample
+        vars: {GOOS: "{{ OS }}", GOARCH: "{{ ARCH }}", BUILD_TYPE: "dev"}
+
+  go/build/sample:
+    desc: Build sample.
+    dir: "{{ .git_root }}"
+    deps:
+      - go/mod/vendor
+    env:
+      CGO_ENABLED: "0"
+      GOOS: "{{ .GOOS }}"
+      GOARCH: "{{ .GOARCH }}"
+      BUILD_TYPE: "{{ .BUILD_TYPE }}"
+    cmds:
+      - |
+        echo "Building with params: | OS: ${GOOS} | ARCH: ${GOARCH} | ${BUILD_TYPE}"
+        if [ "${BUILD_TYPE}" = "prd" ]; then
+          go build -ldflags="-s -w" -o build/postify-${GOOS}-${GOARCH} {{ .git_root }}/cmd/
+        else
+          go build --race -o build/postify-dev-${GOOS}-${GOARCH} {{ .git_root }}/cmd/
+        fi
+    internal: true
+
+  go/lint/install:
+    desc: Install golangci-lint.
+    dir: "{{ .git_root }}"
+    cmds:
+      - cmd: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b {{ .go_root }}/bin {{ .golint_version }}
+      - "{{ .go_root }}/bin/golangci-lint version"
+    sources:
+      - "{{ .go_root }}/bin/golangci-lint"
+    internal: true
+    silent: true
+
+  go/mod/vendor:
+    desc: Run go mod vendor.
+    dir: "{{ .git_root }}"
+    cmds:
+      - |
+        if [ -d "{{ .git_root }}/vendor" ]; then
+          cd {{ .git_root }} && go mod tidy
+        else
+          cd {{ .git_root }} && go mod tidy && go mod vendor
+        fi
+    internal: true
+    silent: true
