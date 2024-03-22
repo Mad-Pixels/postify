@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/Mad-Pixels/go-postify"
 	"github.com/Mad-Pixels/go-postify/pkg/content"
 	"github.com/Mad-Pixels/go-postify/utils"
 	"github.com/urfave/cli/v2"
@@ -44,5 +45,6 @@ func action(ctx *cli.Context) error {
 			return fmt.Errorf("failed preapre site router content: %w", err)
 		}
 	}
+	postify.Logger.Info(getFlagFrom(ctx), " created static content")
 	return nil
 }

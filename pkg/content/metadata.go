@@ -24,7 +24,7 @@ type staticData struct {
 }
 
 func newMetafile(path string) (*Metadata, error) {
-	if err := utils.IsFileOrError(filepath.Join(path, metafileName)); err != nil {
+	if err := utils.IsFileOrCreate(filepath.Join(path, metafileName)); err != nil {
 		return nil, err
 	}
 	body, err := utils.ReadFile(filepath.Join(path, metafileName))
@@ -37,9 +37,7 @@ func newMetafile(path string) (*Metadata, error) {
 			Url:   filepath.Join(urlPrefix, filepath.Base(path)),
 		},
 	}
-	if err := json.Unmarshal(body, md); err != nil {
-		return nil, err
-	}
+	_ = json.Unmarshal(body, md)
 	return md, nil
 }
 
