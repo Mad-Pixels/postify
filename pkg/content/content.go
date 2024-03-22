@@ -45,7 +45,6 @@ type content struct {
 	*Metadata
 
 	contentFiles []string
-	metafile     string
 	path         string
 }
 
