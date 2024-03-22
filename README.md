@@ -1,5 +1,3 @@
-![CI/CD Status](https://github.com//Mad-Pixels/go-postify/actions/workflows/publish.yml/badge.svg?branch=main)
-
 # Postify
 
 Help you to streamline content management through a unified structure, enabling one source for multiple publishing endpoints.
