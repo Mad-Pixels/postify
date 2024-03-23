@@ -7,8 +7,8 @@ const usageTemplate = `Example:
   --{{.FlagFromPath}} PATH_TO_CONTENT_SOURCE
 
 💬Overview:
-  This command send content to a Telegram chat or channel using
-  a specified bot.
+  This command send request to publish new or change published Telegram content 
+  to chat or channel using a specified bot.
 
 By default it processed files inside "--{{.FlagFromPath}}" directory
 and pick "main.md" file (it can pick multiple files using "--{{.FlagBlocks}}").
@@ -20,6 +20,7 @@ add metadata from Telegram:
       "date":       "{ value }"
     }
   }
+If in metadata "message_id" exist send request for modify content.
 
 Example Structure:
 📁article1/

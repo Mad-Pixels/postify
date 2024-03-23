@@ -43,15 +43,10 @@ The `meta.json` file is crucial for managing content across platforms. It stores
 For work with telegram you should create your telegram bot and add it to your channel or group.
 ### Cli-app  💻
 ```bash
-# send post to telegram:
-$ ./postify tg-send \
-  --from {{ ./article }} \
-  --chat-id {{ channel or chat id }} \
-  --bot-token {{ telegram bot token }}
-
-# edit telegram post:
+# send / edit telegram post:
 # *it use meta.json for find telegram message.
-$ ./postify tg-edit \
+# *if message_id exist send request for change post, else send new post.
+$ ./postify tg-send \
   --from {{ ./article }} \
   --chat-id {{ channel or chat id }} \
   --bot-token {{ telegram bot token }}
@@ -68,20 +63,20 @@ $ ./postify html-content \
 **By the way it can be used as a part of CI/CD process:**
 ```bash
 ROOT_DIR=$(git rev-parse --show-toplevel)
-ALL_CONTENT=$(cd "${ROOT_DIR}" && ls -d */)
-NEW_CONTENT=$(git status --porcelain | awk '/^A|^AM/ {if (!($2 ~ /^\.|\/\./)) print $2}' | xargs -n1 dirname | sort -u | grep -vE '^\.?$')
-CHANGED_CONTENT=$(git status --porcelain | awk '/^ M/ {if (!($2 ~ /^\.|\/\./)) print $2}' | xargs -n1 dirname | sort -u | grep -vE '^\.?$')
+CONTENT_ALL=$(cd "${ROOT_DIR}" && ls -d */)
+CONTENT_NEW=$(git diff --name-only HEAD^ HEAD --diff-filter=A | xargs -n 1 dirname | sort -u)
+CONTENT_CHANGED=$(git diff --name-only HEAD^ HEAD --diff-filter=M | xargs -n 1 dirname | sort -u)
 
 for dir in $NEW_CONTENT; do
-  "postify tg-send ...
+  ./postify tg-send ...
 done
 ...
 for dir in $CHANGED_CONTENT; do
-  "postify tg-edit ...
+  ./postify tg-send ...
 done
 ...
 for dir in $ALL_CONTENT; do
-  "postify html-content ...
+  ./postify html-content ...
 done
 ```
 
