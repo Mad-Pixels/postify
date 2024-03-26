@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/Mad-Pixels/go-postify"
 	"github.com/urfave/cli/v2"
 )
 
@@ -41,13 +42,13 @@ func flags() []cli.Flag {
 		&cli.StringFlag{
 			Name:     flagFromPath,
 			Usage:    "the source directory containing content",
-			EnvVars:  []string{"CONTENT_HTML_FROM"},
+			EnvVars:  []string{fmt.Sprintf("%s_HTML_FROM", postify.EnvName)},
 			Required: true,
 		},
 		&cli.StringFlag{
 			Name:     flagToPath,
 			Usage:    "the directory where generated content will be placed",
-			EnvVars:  []string{"CONTENT_HTML_TO"},
+			EnvVars:  []string{fmt.Sprintf("%s_HTML_TO", postify.EnvName)},
 			Required: true,
 		},
 		// feature flags:
@@ -57,7 +58,7 @@ func flags() []cli.Flag {
 				"the directory with assests that will be added along with the content in path '--%s'",
 				flagToPath,
 			),
-			EnvVars:  []string{"CONTENT_HTML_ASSETS"},
+			EnvVars:  []string{fmt.Sprintf("%s_HTML_ASSETS", postify.EnvName)},
 			Required: false,
 			Value:    defaultFlagAssetsPath,
 		},
@@ -67,28 +68,28 @@ func flags() []cli.Flag {
 				"the result generetade content filename in path '--%s'",
 				flagToPath,
 			),
-			EnvVars:  []string{"CONTENT_HTML_FILENAME"},
+			EnvVars:  []string{fmt.Sprintf("%s_HTML_FILENAME", postify.EnvName)},
 			Required: false,
 			Value:    defaultFlagContentName,
 		},
 		&cli.StringFlag{
 			Name:     flagBlocks,
 			Usage:    "add a few markdown files by comma",
-			EnvVars:  []string{"CONTENT_HTML_BLOCKS"},
+			EnvVars:  []string{fmt.Sprintf("%s_HTML_BLOCKS", postify.EnvName)},
 			Required: false,
 			Value:    defaultFlagBlocks,
 		},
 		&cli.StringFlag{
 			Name:     flagTmplPath,
 			Usage:    "specify the template path for adding generated data",
-			EnvVars:  []string{"CONTENT_HTML_TMPL"},
+			EnvVars:  []string{fmt.Sprintf("%s_HTML_TMPL", postify.EnvName)},
 			Required: false,
 			Value:    defaultFlagTmplPath,
 		},
 		&cli.StringFlag{
 			Name:     flagRouterPath,
 			Usage:    "specify the JSON file for generate static router",
-			EnvVars:  []string{"CONTENT_HTML_ROUTER"},
+			EnvVars:  []string{fmt.Sprintf("%s_HTML_ROUTER", postify.EnvName)},
 			Required: false,
 			Value:    defaultFlagRouterPath,
 		},
