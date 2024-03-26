@@ -45,13 +45,14 @@ func TestMetadata_WriteRouter(t *testing.T) {
 	err := md.WriteRouter(routerFilePath)
 	require.NoError(t, err)
 
-	var mdList []Metadata
+	var mdMap map[string]Metadata
 	data, err := os.ReadFile(routerFilePath)
 	require.NoError(t, err)
-	require.NoError(t, json.Unmarshal(data, &mdList))
+	require.NoError(t, json.Unmarshal(data, &mdMap))
 
-	require.Len(t, mdList, 1)
-	assert.Equal(t, "Title", mdList[0].Static.Title)
+	require.Len(t, mdMap, 1, "The map should contain exactly one entry.")
+	assert.Equal(t, md.Telegram.MessageID, mdMap[md.Static.Url].Telegram.MessageID, "Telegram MessageID does not match.")
+	assert.Equal(t, md.Static.Title, mdMap[md.Static.Url].Static.Title, "Static Title does not match.")
 }
 
 func TestMetadata_Sync(t *testing.T) {

@@ -2,6 +2,8 @@ package content
 
 import (
 	"encoding/json"
+	"io"
+	"os"
 	"path/filepath"
 
 	"github.com/Mad-Pixels/go-postify/utils"
@@ -52,25 +54,32 @@ func (m *Metadata) Sync(path string) (err error) {
 
 // WriteRouter appends the current Metadata object to a list of metadata stored in a file at the given path.
 func (m *Metadata) WriteRouter(path string) error {
-	if err := utils.IsFileOrCreate(path); err != nil {
-		return err
-	}
-	prevBody, err := utils.ReadFile(path)
+	file, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE, 0666)
 	if err != nil {
 		return err
 	}
+	defer file.Close()
 
-	var mdList []Metadata
+	var mdList map[string]Metadata
+	prevBody, err := io.ReadAll(file)
+	if err != nil {
+		return err
+	}
 	if len(prevBody) > 0 {
 		if err = json.Unmarshal(prevBody, &mdList); err != nil {
 			return err
 		}
+	} else {
+		mdList = make(map[string]Metadata)
 	}
-	mdList = append(mdList, *m)
+	mdList[m.Static.Url] = *m
 
-	newBody, err := json.MarshalIndent(mdList, "", "  ")
+	file.Seek(0, io.SeekStart)
+	file.Truncate(0)
+	newBody, err := json.Marshal(mdList)
 	if err != nil {
 		return err
 	}
-	return utils.WriteToFile(path, newBody)
+	_, err = file.Write(newBody)
+	return err
 }
