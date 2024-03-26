@@ -74,8 +74,12 @@ func (m *Metadata) WriteRouter(path string) error {
 	}
 	mdList[m.Static.Url] = *m
 
-	file.Seek(0, io.SeekStart)
-	file.Truncate(0)
+	if _, err = file.Seek(0, io.SeekStart); err != nil {
+		return err
+	}
+	if err = file.Truncate(0); err != nil {
+		return err
+	}
 	newBody, err := json.Marshal(mdList)
 	if err != nil {
 		return err
