@@ -22,7 +22,7 @@ type telegramData struct {
 
 type staticData struct {
 	Title string `json:"title"`
-	Url   string `json:"url"`
+	Path  string `json:"path"`
 }
 
 func newMetafile(path string) (*Metadata, error) {
@@ -36,7 +36,7 @@ func newMetafile(path string) (*Metadata, error) {
 	md := &Metadata{
 		Static: staticData{
 			Title: filepath.Base(path),
-			Url:   filepath.Join(urlPrefix, filepath.Base(path)),
+			Path:  filepath.Join(urlPrefix, filepath.Base(path)) + "/",
 		},
 	}
 	_ = json.Unmarshal(body, md)
@@ -72,7 +72,7 @@ func (m *Metadata) WriteRouter(path string) error {
 	} else {
 		mdList = make(map[string]Metadata)
 	}
-	mdList[m.Static.Url] = *m
+	mdList[m.Static.Path] = *m
 
 	if _, err = file.Seek(0, io.SeekStart); err != nil {
 		return err

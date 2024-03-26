@@ -21,7 +21,7 @@ func TestNewMetafile(t *testing.T) {
 		},
 		Static: staticData{
 			Title: "Example Title",
-			Url:   "http://example.com",
+			Path:  "/content/article/",
 		},
 	}
 	data, err := json.Marshal(testMetadata)
@@ -40,7 +40,7 @@ func TestMetadata_WriteRouter(t *testing.T) {
 
 	md := &Metadata{
 		Telegram: telegramData{MessageID: 123, Date: 456},
-		Static:   staticData{Title: "Title", Url: "http://url.com"},
+		Static:   staticData{Title: "Title", Path: "/content/article/"},
 	}
 	err := md.WriteRouter(routerFilePath)
 	require.NoError(t, err)
@@ -51,8 +51,8 @@ func TestMetadata_WriteRouter(t *testing.T) {
 	require.NoError(t, json.Unmarshal(data, &mdMap))
 
 	require.Len(t, mdMap, 1, "The map should contain exactly one entry.")
-	assert.Equal(t, md.Telegram.MessageID, mdMap[md.Static.Url].Telegram.MessageID, "Telegram MessageID does not match.")
-	assert.Equal(t, md.Static.Title, mdMap[md.Static.Url].Static.Title, "Static Title does not match.")
+	assert.Equal(t, md.Telegram.MessageID, mdMap[md.Static.Path].Telegram.MessageID, "Telegram MessageID does not match.")
+	assert.Equal(t, md.Static.Title, mdMap[md.Static.Path].Static.Title, "Static Title does not match.")
 }
 
 func TestMetadata_Sync(t *testing.T) {
@@ -60,7 +60,7 @@ func TestMetadata_Sync(t *testing.T) {
 
 	md := &Metadata{
 		Telegram: telegramData{MessageID: 123, Date: 456},
-		Static:   staticData{Title: "New Title", Url: "http://newurl.com"},
+		Static:   staticData{Title: "New Title", Path: "/content/my_article/"},
 	}
 	err := md.Sync(tmpDir)
 	require.NoError(t, err)
@@ -70,5 +70,5 @@ func TestMetadata_Sync(t *testing.T) {
 
 	assert.Equal(t, md.Telegram.MessageID, result.Telegram.MessageID)
 	assert.Equal(t, md.Static.Title, result.Static.Title)
-	assert.Equal(t, md.Static.Url, result.Static.Url)
+	assert.Equal(t, md.Static.Path, result.Static.Path)
 }
