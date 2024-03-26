@@ -34,6 +34,31 @@ func TestNewMetafile(t *testing.T) {
 	assert.Equal(t, testMetadata.Static.Title, md.Static.Title)
 }
 
+func TestMetadata_Sync_WithTags(t *testing.T) {
+	tmpDir := t.TempDir()
+	originalMd := &Metadata{
+		Telegram: telegramData{MessageID: 123, Date: 456},
+		Static:   staticData{Title: "New Title", Path: "/content/my_article/"},
+		Tags:     map[string]string{"tag1": "value1", "tag2": "value2"},
+	}
+
+	err := originalMd.Sync(tmpDir)
+	require.NoError(t, err)
+	resultMd, err := newMetafile(tmpDir)
+	require.NoError(t, err)
+
+	assert.Equal(t, originalMd.Telegram.MessageID, resultMd.Telegram.MessageID)
+	assert.Equal(t, originalMd.Static.Title, resultMd.Static.Title)
+	assert.Equal(t, originalMd.Static.Path, resultMd.Static.Path)
+
+	require.Equal(t, len(originalMd.Tags), len(resultMd.Tags), "The number of tags does not match.")
+	for key, value := range originalMd.Tags {
+		resultValue, exists := resultMd.Tags[key]
+		require.True(t, exists, "Expected tag %s is missing", key)
+		assert.Equal(t, value, resultValue, "Value for tag %s does not match", key)
+	}
+}
+
 func TestMetadata_WriteRouter(t *testing.T) {
 	tmpDir := t.TempDir()
 	routerFilePath := filepath.Join(tmpDir, "router.json")

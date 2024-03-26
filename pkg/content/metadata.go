@@ -11,8 +11,9 @@ import (
 
 // Metadata ...
 type Metadata struct {
-	Telegram telegramData `json:"telegram"`
-	Static   staticData   `json:"static"`
+	Telegram telegramData      `json:"telegram"`
+	Static   staticData        `json:"static"`
+	Tags     map[string]string `json:"tags"`
 }
 
 type telegramData struct {
