@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"path/filepath"
 
+	"github.com/urfave/cli/v2"
+
 	"github.com/Mad-Pixels/go-postify"
 	"github.com/Mad-Pixels/go-postify/pkg/content"
 	"github.com/Mad-Pixels/go-postify/utils"
-	"github.com/urfave/cli/v2"
 )
 
 func action(ctx *cli.Context) error {
@@ -46,5 +47,5 @@ func action(ctx *cli.Context) error {
 		}
 	}
 	postify.Logger.Info(getFlagFrom(ctx), " created static content")
-	return nil
+	return raw.Sync(getFlagFrom(ctx))
 }

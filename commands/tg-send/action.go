@@ -3,11 +3,11 @@ package tgsend
 import (
 	"fmt"
 
+	"github.com/urfave/cli/v2"
+
 	"github.com/Mad-Pixels/go-postify"
 	"github.com/Mad-Pixels/go-postify/pkg/content"
 	"github.com/Mad-Pixels/go-postify/pkg/telegram"
-
-	"github.com/urfave/cli/v2"
 )
 
 func action(ctx *cli.Context) error {
@@ -40,5 +40,5 @@ func action(ctx *cli.Context) error {
 		return fmt.Errorf("failed to change post %s: %w", getFlagFrom(ctx), err)
 	}
 	postify.Logger.Info(getFlagFrom(ctx), " post was changed")
-	return nil
+	return raw.Sync(getFlagFrom(ctx))
 }

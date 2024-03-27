@@ -37,10 +37,10 @@ func newMetafile(path string) (*Metadata, error) {
 	md := &Metadata{
 		Static: staticData{
 			Title: filepath.Base(path),
-			Path:  filepath.Join(urlPrefix, filepath.Base(path)) + "/",
 		},
 	}
 	_ = json.Unmarshal(body, md)
+	md.Static.Path = "/" + filepath.Join(urlPrefix, filepath.Base(path)) + "/"
 	return md, nil
 }
 
