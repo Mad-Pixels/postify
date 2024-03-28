@@ -27,7 +27,7 @@ func TestNewContent(t *testing.T) {
 		},
 		Static: staticData{
 			Title: "Test Title",
-			Url:   "http://example.com",
+			Path:  "/content/article/",
 		},
 	}
 	metaDataBytes, err := json.Marshal(metaData)

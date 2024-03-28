@@ -1,8 +1,10 @@
 package tgsend
 
 import (
+	"fmt"
 	"strings"
 
+	"github.com/Mad-Pixels/go-postify"
 	"github.com/urfave/cli/v2"
 )
 
@@ -28,26 +30,26 @@ func flags() []cli.Flag {
 		&cli.StringFlag{
 			Name:     flagFromPath,
 			Usage:    "the source directory containig content",
-			EnvVars:  []string{"CONTENT_TG_FROM"},
+			EnvVars:  []string{fmt.Sprintf("%s_TG_FROM", postify.EnvName)},
 			Required: true,
 		},
 		&cli.StringFlag{
 			Name:     flagTgToken,
 			Usage:    "the telegram bo token",
-			EnvVars:  []string{"CONTENT_TG_TOKEN"},
+			EnvVars:  []string{fmt.Sprintf("%s_TG_TOKEN", postify.EnvName)},
 			Required: true,
 		},
 		&cli.Int64Flag{
 			Name:     flagTgChat,
 			Usage:    "the telegram chat or channel ID",
-			EnvVars:  []string{"CONTENT_TG_CHAT"},
+			EnvVars:  []string{fmt.Sprintf("%s_TG_CHAT", postify.EnvName)},
 			Required: true,
 		},
 		// feature flags:
 		&cli.StringFlag{
 			Name:     flagBlocks,
 			Usage:    "add a few markdown files by comma",
-			EnvVars:  []string{"CONTENT_HTML_BLOCKS"},
+			EnvVars:  []string{fmt.Sprintf("%s_HTML_BLOCKS", postify.EnvName)},
 			Required: false,
 			Value:    defaultFlagBlocks,
 		},
