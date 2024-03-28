@@ -36,9 +36,12 @@ func TestNewMetafile(t *testing.T) {
 
 func TestMetadata_Sync_WithTags(t *testing.T) {
 	tmpDir := t.TempDir()
+	baseName := filepath.Base(tmpDir)
+	expectedPath := "/" + filepath.Join(urlPrefix, baseName) + "/"
+
 	originalMd := &Metadata{
 		Telegram: telegramData{MessageID: 123, Date: 456},
-		Static:   staticData{Title: "New Title", Path: "/content/my_article/"},
+		Static:   staticData{Title: "New Title", Path: expectedPath},
 		Tags:     map[string]string{"tag1": "value1", "tag2": "value2"},
 	}
 
@@ -49,7 +52,7 @@ func TestMetadata_Sync_WithTags(t *testing.T) {
 
 	assert.Equal(t, originalMd.Telegram.MessageID, resultMd.Telegram.MessageID)
 	assert.Equal(t, originalMd.Static.Title, resultMd.Static.Title)
-	assert.Equal(t, originalMd.Static.Path, resultMd.Static.Path)
+	assert.Equal(t, expectedPath, resultMd.Static.Path)
 
 	require.Equal(t, len(originalMd.Tags), len(resultMd.Tags), "The number of tags does not match.")
 	for key, value := range originalMd.Tags {
@@ -82,10 +85,12 @@ func TestMetadata_WriteRouter(t *testing.T) {
 
 func TestMetadata_Sync(t *testing.T) {
 	tmpDir := t.TempDir()
+	baseName := filepath.Base(tmpDir)
+	expectedPath := "/" + filepath.Join(urlPrefix, baseName) + "/"
 
 	md := &Metadata{
 		Telegram: telegramData{MessageID: 123, Date: 456},
-		Static:   staticData{Title: "New Title", Path: "/content/my_article/"},
+		Static:   staticData{Title: "New Title", Path: expectedPath},
 	}
 	err := md.Sync(tmpDir)
 	require.NoError(t, err)
@@ -95,5 +100,5 @@ func TestMetadata_Sync(t *testing.T) {
 
 	assert.Equal(t, md.Telegram.MessageID, result.Telegram.MessageID)
 	assert.Equal(t, md.Static.Title, result.Static.Title)
-	assert.Equal(t, md.Static.Path, result.Static.Path)
+	assert.Equal(t, expectedPath, result.Static.Path)
 }
