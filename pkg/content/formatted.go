@@ -39,6 +39,7 @@ func contentHTML(in []byte, out *bytes.Buffer) error {
 // contentTelegram define goldmark pkg for conver Markdown to Telegram.
 func contentTelegram(in []byte, out *bytes.Buffer) error {
 	md := tgmd.TGMD()
+	in = bytes.ReplaceAll(in, []byte("\\\n"), []byte("\\\\\n"))
 	if err := md.Convert(in, out); err != nil {
 		return fmt.Errorf("generate Telegram content failed, got: %w", err)
 	}
