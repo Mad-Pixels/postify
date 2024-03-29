@@ -28,7 +28,9 @@ func contentHTML(in []byte, out *bytes.Buffer) error {
 			html.WithXHTML(),
 		),
 	)
-	if err := md.Convert(bytes.ReplaceAll(in, []byte("$"), []byte("\\$")), out); err != nil {
+	in = bytes.ReplaceAll(in, []byte("$"), []byte("\\$"))
+	in = bytes.ReplaceAll(in, []byte("\\\n"), []byte("\\\\\n"))
+	if err := md.Convert(in, out); err != nil {
 		return fmt.Errorf("generate HTML content failed, got: %w", err)
 	}
 	return nil
