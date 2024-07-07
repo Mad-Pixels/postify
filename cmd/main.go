@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/Mad-Pixels/go-postify"
-	"github.com/Mad-Pixels/go-postify/commands"
+	"github.com/Mad-Pixels/postify"
+	"github.com/Mad-Pixels/postify/commands"
 
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"

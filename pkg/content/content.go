@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"text/template"
 
-	"github.com/Mad-Pixels/go-postify/utils"
+	"github.com/Mad-Pixels/postify/utils"
 )
 
 type Content interface {

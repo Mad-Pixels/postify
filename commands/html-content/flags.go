@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Mad-Pixels/go-postify"
+	"github.com/Mad-Pixels/postify"
 	"github.com/urfave/cli/v2"
 )
 

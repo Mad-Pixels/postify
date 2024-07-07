@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Mad-Pixels/go-postify/utils"
+	"github.com/Mad-Pixels/postify/utils"
 )
 
 // Metadata ...

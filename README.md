@@ -86,7 +86,7 @@ Please feel free to submit pull requests or open issues to discuss new features 
 
 ## License
 This project is licensed under the GPL-3.0 License - see the 
-[LICENSE](https://github.com/Mad-Pixels/go-postify/blob/main/LICENSE) file for details.
+[LICENSE](https://github.com/Mad-Pixels/postify/blob/main/LICENSE) file for details.
 
 ## Deploy
 ```bash
