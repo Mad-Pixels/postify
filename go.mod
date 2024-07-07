@@ -3,7 +3,7 @@ module github.com/Mad-Pixels/go-postify
 go 1.22.0
 
 require (
-	github.com/Mad-Pixels/goldmark-tgmd v0.0.9
+	github.com/Mad-Pixels/goldmark-tgmd v0.0.10
 	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.9.0

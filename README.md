@@ -67,15 +67,15 @@ CONTENT_ALL=$(cd "${ROOT_DIR}" && ls -d */)
 CONTENT_NEW=$(git diff --name-only HEAD^ HEAD --diff-filter=A | xargs -n 1 dirname | sort -u)
 CONTENT_CHANGED=$(git diff --name-only HEAD^ HEAD --diff-filter=M | xargs -n 1 dirname | sort -u)
 
-for dir in $NEW_CONTENT; do
+for dir in $CONTENT_NEW; do
   ./postify tg-send ...
 done
 ...
-for dir in $CHANGED_CONTENT; do
+for dir in $CONTENT_CHANGED; do
   ./postify tg-send ...
 done
 ...
-for dir in $ALL_CONTENT; do
+for dir in $CONTENT_ALL; do
   ./postify html-content ...
 done
 ```
