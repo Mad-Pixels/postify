@@ -1,8 +1,8 @@
 package commands
 
 import (
-	htmlcontent "github.com/Mad-Pixels/go-postify/commands/html-content"
-	tgsend "github.com/Mad-Pixels/go-postify/commands/tg-send"
+	htmlcontent "github.com/Mad-Pixels/postify/commands/html-content"
+	tgsend "github.com/Mad-Pixels/postify/commands/tg-send"
 
 	"github.com/urfave/cli/v2"
 )

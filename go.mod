@@ -1,4 +1,4 @@
-module github.com/Mad-Pixels/go-postify
+module github.com/Mad-Pixels/postify
 
 go 1.22.0
 

@@ -5,9 +5,9 @@ import (
 
 	"github.com/urfave/cli/v2"
 
-	"github.com/Mad-Pixels/go-postify"
-	"github.com/Mad-Pixels/go-postify/pkg/content"
-	"github.com/Mad-Pixels/go-postify/pkg/telegram"
+	"github.com/Mad-Pixels/postify"
+	"github.com/Mad-Pixels/postify/pkg/content"
+	"github.com/Mad-Pixels/postify/pkg/telegram"
 )
 
 func action(ctx *cli.Context) error {
