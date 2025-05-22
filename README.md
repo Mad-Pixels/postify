@@ -1,3 +1,11 @@
+<picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/Mad-Pixels/.github/raw/main/profile/banner.png">
+    <source media="(prefers-color-scheme: light)" srcset="https://github.com/Mad-Pixels/.github/raw/main/profile/banner.png">
+    <img
+        alt="MadPixels"
+        src="https://github.com/Mad-Pixels/.github/raw/main/profile/banner.png">
+</picture>
+
 # Postify
 
 Help you to streamline content management through a unified structure, enabling one source for multiple publishing endpoints.
@@ -80,16 +88,15 @@ for dir in $CONTENT_ALL; do
 done
 ```
 
-## Contributing
-We welcome contributions!  
-Please feel free to submit pull requests or open issues to discuss new features or improvements.
-
-## License
-This project is licensed under the GPL-3.0 License - see the 
-[LICENSE](https://github.com/Mad-Pixels/postify/blob/main/LICENSE) file for details.
-
 ## Deploy
 ```bash
 git tag -a v0.0.1 -m "New Release" 
 git push origin v0.0.1
 ```
+
+
+# Contributing
+We're open to any new ideas and contributions. We also have some rules and taboos here, so please read this page and our [Code of Conduct](/CODE_OF_CONDUCT.md) carefully.
+
+## I want to report an issue
+If you've found an issue and want to report it, please check our [Issues](https://github.com/Mad-Pixels/postify/issues) page.
